@@ -1,9 +1,7 @@
--- Complete Script Hub Template for Delta / Executors
+-- Complete Script Hub Template (Fixed)
 local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
 
 local player = Players.LocalPlayer
 
@@ -30,7 +28,7 @@ local C = {
 	BG = Color3.fromRGB(18, 20, 26),
 	Sidebar = Color3.fromRGB(24, 27, 36),
 	Card = Color3.fromRGB(30, 34, 45),
-	Accent = Color3.fromRGB(235, 65, 85), -- โทนแดงสไตล์ฮับยอดนิยม
+	Accent = Color3.fromRGB(235, 65, 85),
 	Text = Color3.fromRGB(240, 243, 250),
 	Muted = Color3.fromRGB(140, 150, 170),
 	Border = Color3.fromRGB(45, 50, 65),
@@ -86,7 +84,7 @@ local header = create("TextLabel", {
 }, window)
 header.Active = true
 
--- ปุ่มปิด/ย่อเมนู (—)
+-- ปุ่มย่อเมนู (—)
 local minimizeBtn = create("TextButton", {
 	Size = UDim2.fromOffset(32, 28),
 	Position = UDim2.new(1, -42, 0, 8),
@@ -142,9 +140,8 @@ openBtn.Activated:Connect(function() setVisible(true) end)
 
 -- ระบบแท็บและหน้าเนื้อหา
 local sidebar = create("Frame", {
-	Size = UDim2.fromOffset(130, -78),
-	Position = UDim2.fromOffset(12, 56),
 	Size = UDim2.new(0, 130, 1, -85),
+	Position = UDim2.fromOffset(12, 56),
 	BackgroundColor3 = C.Sidebar,
 	BorderSizePixel = 0,
 }, window)
@@ -164,7 +161,7 @@ local function selectTab(name)
 		local active = (k == name)
 		page.Visible = active
 		tabButtons[k].BackgroundColor3 = active and C.Accent or C.Card
-		tabButtons[k].TextColor3 = active C.Text or C.Muted
+		tabButtons[k].TextColor3 = active and C.Text or C.Muted -- แก้ไขจุดที่ตกหล่นตรงนี้แล้ว
 	end
 end
 
@@ -208,7 +205,6 @@ local pHome = addTab("หน้าหลัก", 1)
 local pFarm = addTab("ระบบฟาร์ม", 2)
 local pSetting = addTab("ตั้งค่า", 3)
 
--- ฟังก์ชันเสริมในหน้า
 local function addLabel(parent, text)
 	return create("TextLabel", {
 		Size = UDim2.new(1, 0, 0, 30),
@@ -256,7 +252,7 @@ end)
 selectTab("หน้าหลัก")
 
 -- ระบบลากหน้าต่าง (Drag) รองรับทั้งเมาส์และมือถือ
-local dragging, dragInput, dragStart, startPos
+local dragging, dragStart, startPos
 
 header.InputBegan:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
